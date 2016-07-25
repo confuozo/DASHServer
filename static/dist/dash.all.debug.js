@@ -30197,8 +30197,9 @@ function ThroughputRule(config) {
         }
 
         if (lastRequest.trace && lastRequest.trace.length) {
+	    //jiasi: change the time measurement to avoid throughput spikes from a big rush of packets from the splitter
+	    //originally, record from first byte to last byte time. now record from request time to last byte time.
             downloadTime = (lastRequest._tfinish.getTime() - lastRequest.trequest.getTime()) / 1000;
-	    //originally, record from first byte to last byte time
             //downloadTime = (lastRequest._tfinish.getTime() - lastRequest.tresponse.getTime()) / 1000;
 
             bytes = lastRequest.trace.reduce(function (a, b) {
@@ -30210,8 +30211,7 @@ function ThroughputRule(config) {
             lastRequestThroughput = Math.round(bytes * 8) / downloadTime;
             storeLastRequestThroughputByType(mediaType, lastRequestThroughput);
             
-	    console.log("jiasi: bytes " + bytes + ", start " + lastRequest.tresponse.getTime() + ", end " + lastRequest._tfinish.getTime() + ", " + lastRequest.url + ", " + lastRequest.range);
-	    //Jiasi
+	    console.log("time: bytes " + bytes + ", start " + lastRequest.tresponse.getTime() + ", end " + lastRequest._tfinish.getTime() + ", " + lastRequest.url + ", " + lastRequest.range);
             if (mediaType=='video')
                 console.log('tput, ' + lastRequestThroughput+', ' + lastRequest.url + ', ' + lastRequest.range);
         }
@@ -30234,6 +30234,9 @@ function ThroughputRule(config) {
                 log('ThroughputRule requesting switch to index: ', switchRequest.value, 'type: ', mediaType, ' Priority: ', switchRequest.priority === _SwitchRequestJs2['default'].DEFAULT ? 'Default' : switchRequest.priority === _SwitchRequestJs2['default'].STRONG ? 'Strong' : 'Weak', 'Average throughput', Math.round(averageThroughput), 'kbps');
             }
         }
+
+	//jiasi: hardcode the video rate
+	//switchRequest.value = 0
 
         callback(switchRequest);
     }
