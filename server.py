@@ -12,8 +12,10 @@ def process(data):
     buffer_level = []
     for i in xrange(len(data[0].get('items', []))):
         try:
-            time = datetime.datetime.strptime(data[0]['items'][i]['items'][0]['text'][3:], 
-                "%a %b %d %Y %H:%M:%S %Z-0700 (PDT)").strftime('%Y-%m-%d %H:%M:%S')
+            #Jiasi
+	    #time = datetime.datetime.strptime(data[0]['items'][i]['items'][0]['text'][3:], 
+            #    "%a %b %d %Y %H:%M:%S %Z-0700 (PDT)").strftime('%Y-%m-%d %H:%M:%S')
+	    time = data[0]['items'][i]['items'][0]['text'][3:]
             level = data[0]['items'][i]['items'][1]['text'][7:]
             buffer_level.append(time + ", " + level)
         except Exception as e:
@@ -23,8 +25,9 @@ def process(data):
     rep_switch = []
     for i in xrange(len(data[1].get('items', []))):
         try:
-            time = datetime.datetime.strptime(data[0]['items'][i]['items'][0]['text'][3:], 
-                "%a %b %d %Y %H:%M:%S %Z-0700 (PDT)").strftime('%Y-%m-%d %H:%M:%S')
+            #time = datetime.datetime.strptime(data[0]['items'][i]['items'][0]['text'][3:], 
+            #    "%a %b %d %Y %H:%M:%S %Z-0700 (PDT)").strftime('%Y-%m-%d %H:%M:%S')
+            time = data[0]['items'][i]['items'][0]['text'][3:] 
             mt = data[1]['items'][i]['items'][1]['text'][4:]
             to = data[1]['items'][i]['items'][2]['text'][4:]
             rep_switch.append(time + ", " + mt + ", " + to)
@@ -41,13 +44,13 @@ def serve_static(path):
 
 @app.route('/sendvideometrics', methods=['GET', 'POST'])
 def index():
-    print request.form
+    #print request.form
     #pprint.pprint(json.loads(request.form['data']))
     bufferlevel, repswitch = process(json.loads(request.form['data']))
     #print data
-    with open('vbufferlevel.txt', 'w') as f:
+    with open('logs/vbufferlevel.txt', 'w') as f:
         f.write(bufferlevel);
-    with open('vrep_switch.txt','w') as f:
+    with open('logs/vrep_switch.txt','w') as f:
         f.write(repswitch);
     return "Recorded"
 

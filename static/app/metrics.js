@@ -17,8 +17,13 @@ MetricsTreeConverter = function () {
                 treeMetric.items = [];
                 treeMetric.collapsed = true;
 
+		//Jiasi
+
                 tMetric = {};
-                tMetric.text = "t: " + bufferMetric.t;
+                tMetric.text = "t: " + bufferMetric.t.getTime();
+
+		//console.log(bufferMetric.t)
+		//console.log(bufferMetric.t.getTime())
 
                 levelMetric = {};
                 levelMetric.text = "level: " + bufferMetric.level;
@@ -155,6 +160,8 @@ MetricsTreeConverter = function () {
                 treeMetric.text = "Representation Switch: " + (i + 1);
                 treeMetric.items = [];
                 treeMetric.collapsed = true;
+
+		//Jiasi
 
                 tMetric = {};
                 tMetric.text = "t: " + switchMetric.t;
@@ -293,11 +300,11 @@ MetricsTreeConverter = function () {
                 treeMetric.items.push(rangeMetric);
 
                 trequestMetric = {};
-                trequestMetric.text = "trequest: " + bufferMetric.trequest;
+                trequestMetric.text = "trequest: " + bufferMetric.trequest.getTime();
                 treeMetric.items.push(trequestMetric);
 
                 tresponseMetric = {};
-                tresponseMetric.text = "tresponse: " + bufferMetric.tresponse;
+                tresponseMetric.text = "tresponse: " + bufferMetric.tresponse.getTime();
                 treeMetric.items.push(tresponseMetric);
 
                 responsecodeMetric = {};
